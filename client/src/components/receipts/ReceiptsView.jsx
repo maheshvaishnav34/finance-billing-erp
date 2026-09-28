@@ -73,8 +73,9 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
 
       {/* Receipts Table */}
       <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
-        <table className="w-full text-left border-collapse text-sm">
-          <thead>
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left border-collapse text-sm min-w-[700px] sm:min-w-full">
+            <thead>
             <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50/50">
               <th className="py-4 px-6">Receipt No</th>
               <th className="py-4 px-6">Client / Invoice</th>
@@ -135,6 +136,7 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Printable Receipt Modal (Corporate A4 Branded Layout - Image 2 Style) */}
@@ -143,14 +145,14 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden my-4 sm:my-8 animate-scaleUp">
             
             {/* Top Toolbar */}
-            <div className="px-5 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#0B2545] text-white font-black flex items-center justify-center text-xs shadow-2xs">
+            <div className="px-4 sm:px-5 py-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 truncate max-w-[70%]">
+                <div className="w-8 h-8 rounded-lg bg-[#0B2545] text-white font-black flex items-center justify-center text-xs shadow-2xs shrink-0">
                   RC
                 </div>
-                <div>
-                  <h3 className="font-bold text-xs sm:text-sm text-slate-900 leading-tight">Payment Acknowledgement Voucher (A4 Branded)</h3>
-                  <p className="text-[10px] text-slate-500 font-medium">Receipt #{selectedReceipt.receipt_number} · Ref: {typeof selectedReceipt.invoice_number === 'string' ? selectedReceipt.invoice_number : ''}</p>
+                <div className="truncate">
+                  <h3 className="font-bold text-xs sm:text-sm text-slate-900 leading-tight truncate">Payment Acknowledgement Voucher</h3>
+                  <p className="text-[10px] text-slate-500 font-medium truncate">Receipt #{selectedReceipt.receipt_number} · Ref: {typeof selectedReceipt.invoice_number === 'string' ? selectedReceipt.invoice_number : ''}</p>
                 </div>
               </div>
 
@@ -178,10 +180,10 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
             <div id="printable-document" className="p-4 sm:p-6 print:p-0 bg-white space-y-2.5 print:space-y-2 text-slate-800 text-[10px] leading-normal font-sans">
               
               {/* 1. Header: Brand Logo & Company Info (Left) vs Receipt Details Card (Right) */}
-              <div className="print-page-break-avoid flex flex-row items-start justify-between border-b border-slate-200 pb-2.5 gap-3">
+              <div className="print-page-break-avoid flex flex-col sm:flex-row items-start justify-between border-b border-slate-200 pb-2.5 gap-3">
                 
                 {/* Left: Brand Identity */}
-                <div className="space-y-1">
+                <div className="space-y-1 w-full sm:w-auto">
                   <div className="flex items-center gap-2.5">
                     <div className="w-10 h-10 flex items-center justify-center shrink-0">
                       <svg viewBox="0 0 100 100" className="w-10 h-10">
@@ -201,7 +203,7 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
                       <MapPin className="w-3 h-3 text-[#0B2545] shrink-0" />
                       <span>{masterSettings?.address || '403, Aashirwad Complex, Geeta Bhawan Square, Indore, Madhya Pradesh, 452001, India'}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       <Phone className="w-3 h-3 text-[#0B2545] shrink-0" />
                       <span>{masterSettings?.phone || '+91 73540 05000'}</span>
                       <span className="text-slate-300">|</span>
@@ -216,13 +218,13 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
                 </div>
 
                 {/* Right: Large PAYMENT RECEIPT Title & Metadata Table */}
-                <div className="text-right space-y-1 shrink-0">
+                <div className="text-left sm:text-right space-y-1 w-full sm:w-auto shrink-0">
                   <div>
-                    <div className="text-xl font-black text-[#0B2545] tracking-tight uppercase">PAYMENT RECEIPT</div>
+                    <div className="text-lg sm:text-xl font-black text-[#0B2545] tracking-tight uppercase">PAYMENT RECEIPT</div>
                     <div className="text-[8px] font-bold text-slate-500 tracking-[0.18em] uppercase">BUILDING BRANDS DIGITALLY</div>
                   </div>
 
-                  <div className="bg-sky-50/70 border border-sky-100 rounded-xl p-2 text-[9px] space-y-0.5 w-56 text-left shadow-2xs">
+                  <div className="bg-sky-50/70 border border-sky-100 rounded-xl p-2 text-[9px] space-y-0.5 w-full sm:w-56 text-left shadow-2xs">
                     <div className="flex justify-between"><span className="text-slate-500">Receipt No.</span> <span className="font-mono font-bold text-slate-900">: {selectedReceipt.receipt_number}</span></div>
                     <div className="flex justify-between"><span className="text-slate-500">Payment Date</span> <span className="font-semibold text-slate-800">: {selectedReceipt.payment_date}</span></div>
                     <div className="flex justify-between"><span className="text-slate-500">Against Invoice</span> <span className="font-mono font-bold text-[#0B2545]">: {typeof selectedReceipt.invoice_number === 'string' ? selectedReceipt.invoice_number : ''}</span></div>
@@ -307,8 +309,8 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
                 </div>
               </div>
 
-              {/* 5. Bank Account & Payment Realization Notes (Side-by-Side) */}
-              <div className="print-page-break-avoid grid grid-cols-2 gap-2 pt-0.5 text-[9px]">
+              {/* 5. Bank Account & Payment Realization Notes (Side-by-Side on desktop / Stacked on mobile) */}
+              <div className="print-page-break-avoid grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5 text-[9px]">
                 {/* Column 1: Bank Credit Info */}
                 <div className="space-y-0.5">
                   <div className="font-bold text-slate-900 text-[9.5px] mb-0.5">Deposited Into Corporate Account</div>

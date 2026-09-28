@@ -19,12 +19,18 @@ import {
   Lock,
   UserCheck,
   Crown,
-  ChevronRight
+  ChevronRight,
+  X
 } from 'lucide-react';
 
-export default function Sidebar({ activeTab, setActiveTab, currentUser }) {
+export default function Sidebar({ activeTab, setActiveTab, currentUser, isOpen, onClose }) {
   const isClient = currentUser?.role === 'Client';
   const isPM = currentUser?.role === 'Project Manager';
+
+  const handleNavClick = (id) => {
+    setActiveTab(id);
+    if (onClose) onClose();
+  };
 
   let workspaceNav = [];
   let showBilling = false;
@@ -89,23 +95,48 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser }) {
     ];
 
   return (
-    <aside className="w-64 bg-[#131b2e] text-slate-300 flex flex-col justify-between shrink-0 h-screen select-none border-r border-slate-800/80">
-      {/* Brand Header */}
-      <div className="h-[65px] px-5 flex items-center border-b border-slate-800/80 shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-300 flex items-center justify-center font-extrabold text-[#131b2e] text-base shadow-md shadow-amber-400/20 shrink-0">
-            RC
-          </div>
-          <div className="truncate">
-            <div className="text-white font-bold text-sm tracking-wide flex items-center gap-1.5 leading-tight">
-              <span className="text-blue-400">Redes</span> Creation
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {isOpen && (
+        <div
+          onClick={onClose}
+          className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-40 lg:hidden transition-opacity duration-200"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar (Responsive drawer on mobile / fixed on lg screens) */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#131b2e] text-slate-300 flex flex-col justify-between shrink-0 h-screen select-none border-r border-slate-800/80 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
+          isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
+        }`}
+      >
+        {/* Brand Header */}
+        <div className="h-[65px] px-5 flex items-center justify-between border-b border-slate-800/80 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-300 flex items-center justify-center font-extrabold text-[#131b2e] text-base shadow-md shadow-amber-400/20 shrink-0">
+              RC
             </div>
-            <div className="text-[10px] tracking-wider text-slate-400 font-semibold uppercase leading-tight mt-0.5">
-              Finance Console
+            <div className="truncate">
+              <div className="text-white font-bold text-sm tracking-wide flex items-center gap-1.5 leading-tight">
+                <span className="text-blue-400">Redes</span> Creation
+              </div>
+              <div className="text-[10px] tracking-wider text-slate-400 font-semibold uppercase leading-tight mt-0.5">
+                Finance Console
+              </div>
             </div>
           </div>
+
+          {/* Close button for mobile drawer */}
+          <button
+            type="button"
+            onClick={onClose}
+            className="lg:hidden p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors cursor-pointer"
+            title="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
-      </div>
 
       {/* Navigation Links */}
       <div className="flex-1 overflow-y-auto px-3 py-2 space-y-6">
@@ -121,7 +152,7 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser }) {
               return (
                 <button
                   key={item.id}
-                  onClick={() => setActiveTab(item.id)}
+                  onClick={() => handleNavClick(item.id)}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive
                     ? 'bg-amber-400 text-slate-950 font-semibold shadow-sm shadow-amber-400/20'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
@@ -148,7 +179,7 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser }) {
                 return (
                   <button
                     key={item.id}
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => handleNavClick(item.id)}
                     className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${isActive
                       ? 'bg-amber-400 text-slate-950 font-semibold shadow-sm'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
@@ -176,7 +207,7 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser }) {
                 return (
                   <button
                     key={item.id}
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => handleNavClick(item.id)}
                     className={`w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm font-medium transition-all ${isActive
                       ? 'bg-amber-400 text-slate-950 font-semibold shadow-sm'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
@@ -195,7 +226,7 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser }) {
       {/* Active User Role Profile Card */}
       <div className="p-3 border-t border-slate-800/80 bg-slate-950/40">
         <button
-          onClick={() => setActiveTab(isClient ? 'profile' : 'role_profile')}
+          onClick={() => handleNavClick(isClient ? 'profile' : 'role_profile')}
           className={`w-full flex items-center justify-between p-2 rounded-xl text-left transition-all ${
             activeTab === 'role_profile' || activeTab === 'profile'
               ? 'bg-amber-400/10 border border-amber-400/30 ring-1 ring-amber-400/30'
@@ -223,5 +254,6 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser }) {
         </button>
       </div>
     </aside>
+    </>
   );
 }

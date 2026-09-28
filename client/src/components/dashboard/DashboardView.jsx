@@ -206,12 +206,12 @@ export default function DashboardView({ onNavigate, onOpenRecordPayment, onOpenC
               </div>
             ) : (
               stats?.upcomingPayments?.map(up => (
-                <div key={up.id} className="py-2.5 flex items-center justify-between text-xs">
+                <div key={up.id} className="py-2.5 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-1.5">
                   <div>
                     <div className="font-bold text-slate-800">{up.client_name}</div>
                     <div className="text-slate-400 font-mono text-[11px]">{up.invoice_number} · Due on {up.due_date}</div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-left sm:text-right flex sm:block items-center justify-between">
                     <div className="font-extrabold text-slate-900">₹{up.amount_due?.toLocaleString('en-IN')}</div>
                     <span className="text-[10px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full font-bold">Pending</span>
                   </div>
@@ -240,9 +240,9 @@ export default function DashboardView({ onNavigate, onOpenRecordPayment, onOpenC
 
         <div className="space-y-3">
           {(stats?.recentActivities || []).map((act, i) => (
-            <div key={act.id || i} className="p-3 bg-slate-50/70 hover:bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between text-xs transition-colors">
+            <div key={act.id || i} className="p-3 bg-slate-50/70 hover:bg-slate-50 rounded-2xl border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between text-xs transition-colors gap-2">
               <div className="space-y-0.5">
-                <div className="font-bold text-slate-800 flex items-center gap-2">
+                <div className="font-bold text-slate-800 flex items-center gap-2 flex-wrap">
                   <span>{act.action}</span>
                   {act.entity_ref && (
                     <span className="font-mono text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">
@@ -252,7 +252,7 @@ export default function DashboardView({ onNavigate, onOpenRecordPayment, onOpenC
                 </div>
                 <div className="text-slate-500 text-[11px]">{act.details}</div>
               </div>
-              <div className="text-right shrink-0 ml-4">
+              <div className="text-left sm:text-right shrink-0">
                 <div className="text-[11px] font-semibold text-slate-700">{act.timestamp}</div>
                 <div className="text-[10px] text-slate-400">{act.user}</div>
               </div>

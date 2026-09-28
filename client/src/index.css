@@ -222,3 +222,11 @@
     break-before: always !important;
   }
 }
+
+/* Mobile responsive smooth touch scrolling */
+@layer utilities {
+  .overflow-x-auto,
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}

@@ -39,6 +39,7 @@ export default function App() {
     return null;
   });
   const [loadingUser, setLoadingUser] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [primaryActionTrigger, setPrimaryActionTrigger] = useState(0);
   const [masterSettings, setMasterSettings] = useState(null);
 
@@ -197,11 +198,13 @@ export default function App() {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[#f8fafc]">
-      {/* Left Sidebar */}
+      {/* Left Sidebar (Desktop static / Mobile drawer) */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         currentUser={currentUser}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
 
       {/* Main Content Area */}
@@ -216,10 +219,11 @@ export default function App() {
           onNavigateToProfile={() => setActiveTab(currentUser?.role === 'Client' ? 'profile' : 'role_profile')}
           primaryActionLabel={currentUser?.role !== 'Client' ? primaryActionLabel : null}
           onPrimaryAction={handlePrimaryAction}
+          onToggleSidebar={() => setSidebarOpen(prev => !prev)}
         />
 
-        {/* Dynamic View Body */}
-        <main className="flex-1 overflow-y-auto px-8 py-6 relative z-20">
+        {/* Dynamic View Body (Responsive padding) */}
+        <main className="flex-1 overflow-y-auto p-3.5 sm:p-5 lg:p-8 relative z-20">
           {activeTab === 'overview' && (
             <DashboardView
               onNavigate={(tab) => setActiveTab(tab)}
