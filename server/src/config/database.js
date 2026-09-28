@@ -9,12 +9,16 @@ const __dirname = path.dirname(__filename);
 // Ensure .env is loaded
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
+const isLocalhost = !process.env.DB_HOST || process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1';
+export const shouldConnectMySql = !(process.env.VERCEL && isLocalhost);
+
 const dbConfig = {
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '3306', 10),
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'redes_erp',
+  connectTimeout: 2500, // Fast 2.5s timeout to prevent serverless function hangs
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -31,6 +35,7 @@ export const pool = mysql.createPool(dbConfig);
  * @returns {Promise<boolean>}
  */
 export async function checkDatabaseConnection() {
+  if (!shouldConnectMySql) return false;
   try {
     const connection = await pool.getConnection();
     await connection.ping();
@@ -48,10 +53,13 @@ export async function checkDatabaseConnection() {
  * @returns {Promise<[any, any]>}
  */
 export async function query(sql, params = []) {
+  if (!shouldConnectMySql) {
+    throw new Error('MySQL not available on serverless localhost');
+  }
   try {
     return await pool.query(sql, params);
   } catch (err) {
-    console.error(`[MySQL Query Error] SQL: ${sql} | Error: ${err.message}`);
+    console.warn(`[MySQL Query Notice] ${err.message}`);
     throw err;
   }
 }
@@ -62,6 +70,9 @@ export async function query(sql, params = []) {
  * @returns {Promise<any>}
  */
 export async function transaction(callback) {
+  if (!shouldConnectMySql) {
+    throw new Error('MySQL transactions not available on serverless localhost');
+  }
   const connection = await pool.getConnection();
   await connection.beginTransaction();
   try {
@@ -70,7 +81,7 @@ export async function transaction(callback) {
     return result;
   } catch (err) {
     await connection.rollback();
-    console.error(`[MySQL Transaction Rolled Back] Error: ${err.message}`);
+    console.warn(`[MySQL Transaction Notice] ${err.message}`);
     throw err;
   } finally {
     connection.release();
@@ -85,7 +96,7 @@ export async function closePool() {
     await pool.end();
     console.log('✅ MySQL connection pool closed gracefully.');
   } catch (err) {
-    console.error('Error closing MySQL pool:', err);
+    // Ignore close errors
   }
 }
 

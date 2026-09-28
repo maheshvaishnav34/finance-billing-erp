@@ -1,5 +1,17 @@
 const API_BASE = '/api';
 
+async function safeJson(res) {
+  try {
+    const text = await res.text();
+    if (!text || !text.trim()) {
+      return { success: false, message: `Server returned empty response (${res.status})` };
+    }
+    return JSON.parse(text);
+  } catch (err) {
+    return { success: false, message: `Failed to parse response: ${err.message}` };
+  }
+}
+
 function getAuthHeader() {
   const token = localStorage.getItem('redes_auth_token');
   return token ? { Authorization: `Bearer ${token}` } : {};
@@ -13,7 +25,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials)
     });
-    return res.json();
+    return safeJson(res);
   },
   register: async (userData) => {
     const res = await fetch(`${API_BASE}/auth/register`, {
@@ -21,7 +33,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
     });
-    return res.json();
+    return safeJson(res);
   },
   forgotPassword: async (email) => {
     const res = await fetch(`${API_BASE}/auth/forgot-password`, {
@@ -29,7 +41,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
     });
-    return res.json();
+    return safeJson(res);
   },
   resetPassword: async (data) => {
     const res = await fetch(`${API_BASE}/auth/reset-password`, {
@@ -37,13 +49,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   getMe: async () => {
     const res = await fetch(`${API_BASE}/auth/me`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   updateProfile: async (profileData) => {
     const res = await fetch(`${API_BASE}/auth/profile`, {
@@ -54,13 +66,13 @@ export const api = {
       },
       body: JSON.stringify(profileData)
     });
-    return res.json();
+    return safeJson(res);
   },
   getManageableUsers: async () => {
     const res = await fetch(`${API_BASE}/auth/manageable-users`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   createManageableUser: async (userData) => {
     const res = await fetch(`${API_BASE}/auth/manageable-users`, {
@@ -71,14 +83,14 @@ export const api = {
       },
       body: JSON.stringify(userData)
     });
-    return res.json();
+    return safeJson(res);
   },
   deleteManageableUser: async (userId) => {
     const res = await fetch(`${API_BASE}/auth/manageable-users/${userId}`, {
       method: 'DELETE',
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   updateManageableUserStatus: async (userId, status) => {
     const res = await fetch(`${API_BASE}/auth/manageable-users/${userId}/status`, {
@@ -89,17 +101,17 @@ export const api = {
       },
       body: JSON.stringify({ status })
     });
-    return res.json();
+    return safeJson(res);
   },
   getSwitchUsers: async () => {
     const res = await fetch(`${API_BASE}/auth/switch-users`);
-    return res.json();
+    return safeJson(res);
   },
   getRolesMatrix: async () => {
     const res = await fetch(`${API_BASE}/auth/roles-matrix`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Dashboard
@@ -107,7 +119,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/dashboard/stats`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Invoices
@@ -116,19 +128,19 @@ export const api = {
     const res = await fetch(`${API_BASE}/invoices?${query}`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   getInvoice: async (id) => {
     const res = await fetch(`${API_BASE}/invoices/${id}`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   getNextInvoiceNumber: async () => {
     const res = await fetch(`${API_BASE}/invoices/next-number`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   createInvoice: async (data) => {
     const res = await fetch(`${API_BASE}/invoices`, {
@@ -136,7 +148,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   updateInvoice: async (id, data) => {
     const res = await fetch(`${API_BASE}/invoices/${id}`, {
@@ -144,7 +156,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   sendInvoice: async (id, data) => {
     const res = await fetch(`${API_BASE}/invoices/${id}/send`, {
@@ -152,7 +164,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   cancelInvoice: async (id, reason) => {
     const res = await fetch(`${API_BASE}/invoices/${id}/cancel`, {
@@ -160,21 +172,21 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify({ cancellation_reason: reason })
     });
-    return res.json();
+    return safeJson(res);
   },
   duplicateInvoice: async (id) => {
     const res = await fetch(`${API_BASE}/invoices/${id}/duplicate`, {
       method: 'POST',
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   approveInvoice: async (id) => {
     const res = await fetch(`${API_BASE}/invoices/${id}/approve`, {
       method: 'POST',
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   rejectInvoice: async (id, reason) => {
     const res = await fetch(`${API_BASE}/invoices/${id}/reject`, {
@@ -182,7 +194,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify({ rejection_reason: reason })
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Project Manager Billing
@@ -190,7 +202,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/pm/project-billing`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   requestInvoice: async (data) => {
     const res = await fetch(`${API_BASE}/pm/request-invoice`, {
@@ -198,14 +210,14 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   approveInvoiceRequest: async (id) => {
     const res = await fetch(`${API_BASE}/pm/approve-request/${id}`, {
       method: 'POST',
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Payments
@@ -214,7 +226,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/payments?${query}`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   recordPayment: async (data) => {
     const res = await fetch(`${API_BASE}/payments`, {
@@ -222,7 +234,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   verifyPayment: async (id, status) => {
     const res = await fetch(`${API_BASE}/payments/${id}/verify`, {
@@ -230,7 +242,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify({ status })
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Quotations
@@ -238,7 +250,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/quotations`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   createQuotation: async (data) => {
     const res = await fetch(`${API_BASE}/quotations`, {
@@ -246,14 +258,14 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   convertQuotation: async (id) => {
     const res = await fetch(`${API_BASE}/quotations/${id}/convert-to-invoice`, {
       method: 'POST',
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Receipts
@@ -261,13 +273,13 @@ export const api = {
     const res = await fetch(`${API_BASE}/receipts`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   getReceipt: async (id) => {
     const res = await fetch(`${API_BASE}/receipts/${id}`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Credit notes
@@ -275,7 +287,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/credit-notes`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   createCreditNote: async (data) => {
     const res = await fetch(`${API_BASE}/credit-notes`, {
@@ -283,7 +295,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Reminders
@@ -291,14 +303,14 @@ export const api = {
     const res = await fetch(`${API_BASE}/reminders`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   runReminderCheck: async () => {
     const res = await fetch(`${API_BASE}/reminders/run-check`, {
       method: 'POST',
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   sendManualReminder: async (data) => {
     const res = await fetch(`${API_BASE}/reminders/send-manual`, {
@@ -306,7 +318,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Recurring
@@ -314,7 +326,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/recurring`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   createRecurring: async (data) => {
     const res = await fetch(`${API_BASE}/recurring`, {
@@ -322,14 +334,14 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   triggerRecurringNow: async (id) => {
     const res = await fetch(`${API_BASE}/recurring/${id}/generate-now`, {
       method: 'POST',
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Payment Links
@@ -337,7 +349,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/payment-links`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   createPaymentLink: async (data) => {
     const res = await fetch(`${API_BASE}/payment-links`, {
@@ -345,7 +357,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Clients
@@ -353,7 +365,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/clients`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   createClient: async (data) => {
     const res = await fetch(`${API_BASE}/clients`, {
@@ -361,13 +373,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   getClient: async (id) => {
     const res = await fetch(`${API_BASE}/clients/${id}`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   updateClient: async (id, data) => {
     const res = await fetch(`${API_BASE}/clients/${id}`, {
@@ -375,14 +387,14 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
   deleteClient: async (id) => {
     const res = await fetch(`${API_BASE}/clients/${id}`, {
       method: 'DELETE',
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Reports
@@ -390,31 +402,31 @@ export const api = {
     const res = await fetch(`${API_BASE}/reports/aging`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   getGstReport: async () => {
     const res = await fetch(`${API_BASE}/reports/gst`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   getCollectionsReport: async () => {
     const res = await fetch(`${API_BASE}/reports/collections`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   getOutstandingReport: async () => {
     const res = await fetch(`${API_BASE}/reports/outstanding`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   getRevenueReport: async () => {
     const res = await fetch(`${API_BASE}/reports/revenue`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Audit
@@ -422,7 +434,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/audit-logs`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Settings
@@ -430,7 +442,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/settings`, {
       headers: { ...getAuthHeader() }
     });
-    return res.json();
+    return safeJson(res);
   },
   updateSettings: async (data) => {
     const res = await fetch(`${API_BASE}/settings`, {
@@ -438,13 +450,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   },
 
   // Portal (Public token based)
   getPortalInvoice: async (token) => {
     const res = await fetch(`${API_BASE}/portal/invoice/${token}`);
-    return res.json();
+    return safeJson(res);
   },
   payPortalInvoice: async (token, data) => {
     const res = await fetch(`${API_BASE}/portal/pay/${token}`, {
@@ -452,6 +464,6 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    return res.json();
+    return safeJson(res);
   }
 };

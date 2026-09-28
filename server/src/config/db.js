@@ -42,9 +42,11 @@ let db = {
 };
 
 // Ensure data dir exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (e) {}
 
 export const defaultTaxRates = [
   { id: 'tax_1', name: 'CGST (9%) + SGST (9%)', rate: 18, type: 'Intra-State GST', is_default: true, active: true },
@@ -175,10 +177,11 @@ Redes Creation Finance Team`
 };
 
 export function saveDatabase() {
+  if (process.env.VERCEL) return; // Vercel is read-only serverless environment
   try {
     fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), 'utf-8');
   } catch (err) {
-    console.error('Failed to save database to disk:', err);
+    console.warn('Failed to save database to disk:', err.message);
   }
 }
 
