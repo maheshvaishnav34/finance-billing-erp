@@ -72,14 +72,8 @@ export default function App() {
           } else {
             localStorage.removeItem('redes_auth_token');
           }
-        } else {
-          // Auto login default CEO on initial load for instant evaluation
-          const loginRes = await api.login({ email: 'nitin@redescreation.com', password: 'password123' });
-          if (loginRes.success) {
-            localStorage.setItem('redes_auth_token', loginRes.token);
-            setCurrentUser(loginRes.user);
-          }
         }
+        // No token = show AuthPage (Sign In screen)
       } catch (err) {
         console.error('Failed to init auth:', err);
       } finally {
