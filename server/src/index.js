@@ -71,8 +71,10 @@ app.get('/api/health', async (req, res) => {
     server: 'ok',
     database: isDbConnected ? 'connected' : 'disconnected'
   });
+});
+
 // 404 Handler for undefined /api routes
-app.use('/api/*', (req, res) => {
+app.use('/api', (req, res) => {
   return res.status(404).json({
     success: false,
     message: `API endpoint ${req.method} ${req.originalUrl || req.url} not found`
