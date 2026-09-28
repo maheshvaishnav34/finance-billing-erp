@@ -55,18 +55,6 @@ export default function AuthPage({ onLoginSuccess }) {
     role: 'Client'
   });
 
-  const demoAccounts = [
-    { label: 'CEO (Nitin)', email: 'nitin@redescreation.com', password: 'password123', badge: 'Full Access' },
-    { label: 'Finance (Chirag)', email: 'chirag@redescreation.com', password: 'password123', badge: 'Billing Ops' },
-    { label: 'PM (Priya)', email: 'priya@redescreation.com', password: 'password123', badge: 'Projects' },
-    { label: 'Client (Northstar)', email: 'billing@northstarlabs.in', password: 'password123', badge: 'Client Portal' },
-  ];
-
-  const fillDemoAccount = (email, password) => {
-    setLoginForm({ email, password });
-    setErrorMessage('');
-  };
-
   const executeLogin = async (credentials) => {
     setLoading(true);
     setErrorMessage('');
@@ -520,35 +508,6 @@ export default function AuthPage({ onLoginSuccess }) {
                   </button>
                 </div>
 
-                {/* Quick 1-Tap Demo Logins Pill Helper */}
-                {!isSignUp && (
-                  <div className="p-2.5 sm:p-3 bg-slate-50 border border-slate-200/80 rounded-xl sm:rounded-2xl space-y-1.5 sm:space-y-2">
-                    <div className="flex items-center justify-between text-[11px] font-bold text-slate-600">
-                      <span className="flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                        <span>Quick Demo Fill (1-Tap):</span>
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-normal">Tap to auto-fill</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
-                      {demoAccounts.map((acc) => (
-                        <button
-                          key={acc.email}
-                          type="button"
-                          onClick={() => fillDemoAccount(acc.email, acc.password)}
-                          className={`p-2 rounded-lg sm:rounded-xl text-left border transition-all text-xs cursor-pointer flex flex-col justify-center ${
-                            loginForm.email === acc.email
-                              ? 'bg-amber-50/90 border-amber-300 text-amber-950 font-semibold shadow-xs'
-                              : 'bg-white border-slate-200 hover:border-slate-300 text-slate-700'
-                          }`}
-                        >
-                          <span className="truncate font-semibold text-[11px] sm:text-xs">{acc.label}</span>
-                          <span className="text-[9px] sm:text-[10px] text-slate-400 truncate">{acc.badge}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 {/* Error Message Notification */}
                 {errorMessage && (
@@ -623,12 +582,6 @@ export default function AuthPage({ onLoginSuccess }) {
                 ) : (
                   /* Sign Up Form (Strictly Client Registration) */
                   <form onSubmit={handleSignupSubmit} className="space-y-3 pt-2">
-                    <div className="p-3 bg-amber-50/80 border border-amber-200/80 rounded-2xl text-[11px] text-amber-950 flex items-start gap-2.5">
-                      <ShieldCheck className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                      <span className="leading-snug">
-                        <strong>Client Registration:</strong> Create your billing account to access your invoices, receipts, and make payments. Internal staff logins (CEO, Finance, PM) are provisioned internally.
-                      </span>
-                    </div>
 
                     <div>
                       <label className="block text-xs font-bold text-slate-700 tracking-wide mb-1 uppercase">
