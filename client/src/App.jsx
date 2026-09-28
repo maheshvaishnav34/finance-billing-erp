@@ -22,6 +22,7 @@ import ClientSecurityView from './components/profile/ClientSecurityView';
 import RoleProfileView from './components/profile/RoleProfileView';
 import UserManagementView from './components/users/UserManagementView';
 import ToastContainer, { toast } from './components/common/Toast';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import { api } from './services/api';
 
 export default function App() {
@@ -72,7 +73,7 @@ export default function App() {
           }
         } else {
           // Auto login default CEO on initial load for instant evaluation
-          const loginRes = await api.login({ email: 'nitin@redescreation.com' });
+          const loginRes = await api.login({ email: 'nitin@redescreation.com', password: 'password123' });
           if (loginRes.success) {
             localStorage.setItem('redes_auth_token', loginRes.token);
             setCurrentUser(loginRes.user);
@@ -89,7 +90,7 @@ export default function App() {
 
   const handleSwitchUser = async (userToSwitch) => {
     try {
-      const res = await api.login({ email: userToSwitch.email });
+      const res = await api.login({ email: userToSwitch.email, password: 'password123' });
       if (res.success) {
         localStorage.setItem('redes_auth_token', res.token);
         setCurrentUser(res.user);

@@ -42,10 +42,14 @@ export default function CreditNotesView({ currentUser }) {
             ) : (
               creditNotes.map(cn => (
                 <tr key={cn.id} className="hover:bg-slate-50/70 transition-colors">
-                  <td className="py-4 px-6 font-mono font-bold text-purple-700">{cn.credit_note_number}</td>
+                  <td className="py-4 px-6 font-mono font-bold text-purple-700">
+                    {typeof cn.credit_note_number === 'string' ? cn.credit_note_number : (cn.credit_note_number?.number || '')}
+                  </td>
                   <td className="py-4 px-6">
                     <div className="font-bold text-slate-900">{cn.client_name}</div>
-                    <div className="text-xs text-slate-400 font-mono">{cn.invoice_number}</div>
+                    <div className="text-xs text-slate-400 font-mono">
+                      {typeof cn.invoice_number === 'string' ? cn.invoice_number : (cn.invoice_number?.number || '')}
+                    </div>
                   </td>
                   <td className="py-4 px-6 text-slate-600">{cn.date}</td>
                   <td className="py-4 px-6 font-extrabold text-slate-900">₹{cn.amount?.toLocaleString('en-IN')}</td>

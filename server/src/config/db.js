@@ -233,6 +233,22 @@ export function loadDatabase() {
           }
         });
       }
+
+      // Sanitize any corrupt empty object sequence fields
+      ['receipts', 'credit_notes', 'email_logs', 'invoice_requests'].forEach(table => {
+        if (Array.isArray(db[table])) {
+          db[table].forEach(item => {
+            if (typeof item === 'object' && item !== null) {
+              for (const [k, v] of Object.entries(item)) {
+                if (typeof v === 'object' && v !== null && !Array.isArray(v)) {
+                  item[k] = '';
+                  needsSave = true;
+                }
+              }
+            }
+          });
+        }
+      });
       // Ensure corporate financial settings match Image 2
       db.financial_settings = {
         company_name: 'Redes Creation IT & Digital Solutions',

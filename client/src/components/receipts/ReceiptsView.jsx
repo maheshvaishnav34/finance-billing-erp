@@ -100,7 +100,9 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
                   </td>
                   <td className="py-4 px-6">
                     <div className="font-bold text-slate-900">{r.client_name}</div>
-                    <div className="text-xs text-slate-500 font-mono">{r.invoice_number}</div>
+                    <div className="text-xs text-slate-500 font-mono">
+                      {typeof r.invoice_number === 'string' ? r.invoice_number : (r.invoice_number?.number || '')}
+                    </div>
                   </td>
                   <td className="py-4 px-6 text-slate-600 font-medium">{r.payment_date}</td>
                   <td className="py-4 px-6">
@@ -148,7 +150,7 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
                 </div>
                 <div>
                   <h3 className="font-bold text-xs sm:text-sm text-slate-900 leading-tight">Payment Acknowledgement Voucher (A4 Branded)</h3>
-                  <p className="text-[10px] text-slate-500 font-medium">Receipt #{selectedReceipt.receipt_number} · Ref: {selectedReceipt.invoice_number}</p>
+                  <p className="text-[10px] text-slate-500 font-medium">Receipt #{selectedReceipt.receipt_number} · Ref: {typeof selectedReceipt.invoice_number === 'string' ? selectedReceipt.invoice_number : ''}</p>
                 </div>
               </div>
 
@@ -223,7 +225,7 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
                   <div className="bg-sky-50/70 border border-sky-100 rounded-xl p-2 text-[9px] space-y-0.5 w-56 text-left shadow-2xs">
                     <div className="flex justify-between"><span className="text-slate-500">Receipt No.</span> <span className="font-mono font-bold text-slate-900">: {selectedReceipt.receipt_number}</span></div>
                     <div className="flex justify-between"><span className="text-slate-500">Payment Date</span> <span className="font-semibold text-slate-800">: {selectedReceipt.payment_date}</span></div>
-                    <div className="flex justify-between"><span className="text-slate-500">Against Invoice</span> <span className="font-mono font-bold text-[#0B2545]">: {selectedReceipt.invoice_number}</span></div>
+                    <div className="flex justify-between"><span className="text-slate-500">Against Invoice</span> <span className="font-mono font-bold text-[#0B2545]">: {typeof selectedReceipt.invoice_number === 'string' ? selectedReceipt.invoice_number : ''}</span></div>
                     <div className="flex justify-between"><span className="text-slate-500">Payment Mode</span> <span className="font-semibold text-slate-800">: {selectedReceipt.payment_method}</span></div>
                     <div className="flex justify-between"><span className="text-slate-500">Transaction ID / UTR</span> <span className="font-mono font-semibold text-slate-800">: {selectedReceipt.transaction_id || 'N/A'}</span></div>
                   </div>
@@ -265,7 +267,7 @@ export default function ReceiptsView({ currentUser, masterSettings }) {
                         <div className="text-[8.5px] text-slate-500 leading-tight">Digital IT & Web Development Services</div>
                       </td>
                       <td className="py-1 px-2 text-center font-mono font-semibold text-slate-700">
-                        {selectedReceipt.invoice_number}
+                        {typeof selectedReceipt.invoice_number === 'string' ? selectedReceipt.invoice_number : ''}
                       </td>
                       <td className="py-1 px-2 text-right font-medium tabular-nums text-slate-700">
                         ₹ {originalInvoiceTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

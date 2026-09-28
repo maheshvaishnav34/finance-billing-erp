@@ -2978,7 +2978,7 @@
       "receipt_number": "RC/2026-27/RECEIPT/5725",
       "payment_id": "pay_95091aa5",
       "invoice_id": "inv_f44de178",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1003",
       "client_id": "cli_70b8178c",
       "client_name": "Client",
       "payment_date": "2026-09-28",
@@ -3008,7 +3008,7 @@
       "receipt_number": "RC/2026-27/RECEIPT/6003",
       "payment_id": "pay_d684fa74",
       "invoice_id": "inv_9f9e525a",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1005",
       "client_id": "cli_44af634d",
       "client_name": "Client",
       "payment_date": "2026-09-28",
@@ -3023,7 +3023,7 @@
       "receipt_number": "RC/2026-27/RECEIPT/8503",
       "payment_id": "pay_5e49130f",
       "invoice_id": "inv_d073214c",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1007",
       "client_id": "cli_130b389e",
       "client_name": "Client",
       "payment_date": "2026-09-28",
@@ -3365,9 +3365,9 @@
     },
     {
       "id": "cn_08f02c5d",
-      "credit_note_number": {},
+      "credit_note_number": "RC/2026-27/CN/0002",
       "invoice_id": "inv_f44de178",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1003",
       "client_id": "cli_70b8178c",
       "client_name": "OmniCloud Innovations",
       "date": "2026-09-28",
@@ -3379,9 +3379,9 @@
     },
     {
       "id": "cn_43d32131",
-      "credit_note_number": {},
+      "credit_note_number": "RC/2026-27/CN/0003",
       "invoice_id": "inv_9f9e525a",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1005",
       "client_id": "cli_44af634d",
       "client_name": "OmniCloud Innovations",
       "date": "2026-09-28",
@@ -7094,7 +7094,7 @@
     {
       "id": "em_dd3fb317",
       "invoice_id": "inv_3214655a",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1000",
       "client_id": "cli_70b8178c",
       "client_name": "OmniCloud Innovations",
       "recipient_email": "vikram@omnicloud.in",
@@ -7106,7 +7106,7 @@
     {
       "id": "em_3519125b",
       "invoice_id": "inv_3a4c891d",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1001",
       "client_id": "cli_70b8178c",
       "client_name": "OmniCloud Innovations",
       "recipient_email": "vikram@omnicloud.in",
@@ -7118,7 +7118,7 @@
     {
       "id": "em_5da1f6ef",
       "invoice_id": "inv_d073214c",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1007",
       "client_id": "cli_130b389e",
       "client_name": "OmniCloud Innovations",
       "recipient_email": "vikram@omnicloud.in",
@@ -7130,7 +7130,7 @@
     {
       "id": "em_644f1f2b",
       "invoice_id": "inv_cf03bd89",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1008",
       "client_id": "cli_f26d8ee7",
       "client_name": "OmniCloud Innovations",
       "recipient_email": "vikram@omnicloud.in",
@@ -7142,7 +7142,7 @@
     {
       "id": "em_66a7150d",
       "invoice_id": "inv_296a85f9",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1009",
       "client_id": "cli_80d6aedb",
       "client_name": "OmniCloud Innovations",
       "recipient_email": "vikram@omnicloud.in",
@@ -7154,7 +7154,7 @@
     {
       "id": "em_bb65cbfd",
       "invoice_id": "inv_f44de178",
-      "invoice_number": {},
+      "invoice_number": "RC/2026-27/INV/1003",
       "client_id": "cli_70b8178c",
       "client_name": "OmniCloud Innovations",
       "recipient_email": "vikram@omnicloud.in",
@@ -7345,7 +7345,7 @@
       "requested_by": "Priya Sharma",
       "status": "Approved & Invoiced",
       "created_at": "2026-09-28T04:58:22.437Z",
-      "generated_invoice_number": {},
+      "generated_invoice_number": "",
       "generated_invoice_id": "inv_3a4c891d"
     },
     {
