@@ -1,0 +1,158 @@
+export const ROLES = {
+  CEO: 'CEO',
+  FINANCE_ADMIN: 'Finance/Admin',
+  PROJECT_MANAGER: 'Project Manager',
+  CLIENT: 'Client'
+};
+
+export const PERMISSIONS = {
+  // Dashboard
+  DASHBOARD_VIEW: 'dashboard.view',
+
+  // Clients
+  CLIENT_VIEW: 'client.view',
+  CLIENT_EDIT: 'client.edit',
+  CLIENT_MANAGE: 'client.manage',
+
+  // Quotations
+  QUOTATION_VIEW: 'quotation.view',
+  QUOTATION_CREATE: 'quotation.create',
+  QUOTATION_EDIT: 'quotation.edit',
+  QUOTATION_APPROVE: 'quotation.approve',
+  QUOTATION_CONVERT: 'quotation.convert',
+
+  // Invoices
+  INVOICE_VIEW: 'invoice.view',
+  INVOICE_CREATE: 'invoice.create',
+  INVOICE_EDIT: 'invoice.edit',
+  INVOICE_SEND: 'invoice.send',
+  INVOICE_CANCEL: 'invoice.cancel',
+  INVOICE_DOWNLOAD: 'invoice.download',
+  INVOICE_APPROVE: 'invoice.approve',
+  INVOICE_REQUEST: 'invoice.request',
+
+  // Payments
+  PAYMENT_VIEW: 'payment.view',
+  PAYMENT_RECORD: 'payment.record',
+  PAYMENT_VERIFY: 'payment.verify',
+  PAYMENT_RECONCILE: 'payment.reconcile',
+
+  // Receipts
+  RECEIPT_VIEW: 'receipt.view',
+  RECEIPT_CREATE: 'receipt.create',
+  RECEIPT_DOWNLOAD: 'receipt.download',
+
+  // Credit Notes
+  CREDIT_NOTE_VIEW: 'credit_note.view',
+  CREDIT_NOTE_CREATE: 'credit_note.create',
+
+  // Reminders
+  REMINDER_VIEW: 'reminder.view',
+  REMINDER_SEND: 'reminder.send',
+  REMINDER_CONFIGURE: 'reminder.configure',
+
+  // Recurring Billing
+  RECURRING_VIEW: 'recurring_billing.view',
+  RECURRING_CREATE: 'recurring_billing.create',
+  RECURRING_MANAGE: 'recurring.manage',
+
+  // Payment Links
+  PAYMENT_LINK_VIEW: 'payment_link.view',
+  PAYMENT_LINK_CREATE: 'payment_link.create',
+  PAYMENT_LINK_MANAGE: 'payment_link.manage',
+
+  // Reports
+  REPORT_VIEW: 'report.view',
+  REPORT_EXPORT: 'report.export',
+
+  // Settings
+  SETTINGS_FINANCE: 'settings.finance',
+  SETTINGS_TAX: 'settings.tax',
+  SETTINGS_INVOICE_NUMBER: 'settings.invoice_number',
+  SETTINGS_MANAGE: 'settings.manage',
+
+  // Audit
+  AUDIT_VIEW: 'audit_log.view'
+};
+
+export const ROLE_PERMISSIONS_MAP = {
+  [ROLES.CEO]: Object.values(PERMISSIONS),
+  [ROLES.FINANCE_ADMIN]: [
+    PERMISSIONS.DASHBOARD_VIEW,
+    PERMISSIONS.CLIENT_VIEW,
+    PERMISSIONS.CLIENT_EDIT,
+    PERMISSIONS.CLIENT_MANAGE,
+    PERMISSIONS.QUOTATION_VIEW,
+    PERMISSIONS.QUOTATION_CREATE,
+    PERMISSIONS.QUOTATION_EDIT,
+    PERMISSIONS.QUOTATION_CONVERT,
+    PERMISSIONS.INVOICE_VIEW,
+    PERMISSIONS.INVOICE_CREATE,
+    PERMISSIONS.INVOICE_EDIT,
+    PERMISSIONS.INVOICE_SEND,
+    PERMISSIONS.INVOICE_CANCEL,
+    PERMISSIONS.INVOICE_DOWNLOAD,
+    PERMISSIONS.PAYMENT_VIEW,
+    PERMISSIONS.PAYMENT_RECORD,
+    PERMISSIONS.PAYMENT_VERIFY,
+    PERMISSIONS.PAYMENT_RECONCILE,
+    PERMISSIONS.RECEIPT_VIEW,
+    PERMISSIONS.RECEIPT_CREATE,
+    PERMISSIONS.RECEIPT_DOWNLOAD,
+    PERMISSIONS.CREDIT_NOTE_VIEW,
+    PERMISSIONS.CREDIT_NOTE_CREATE,
+    PERMISSIONS.REMINDER_VIEW,
+    PERMISSIONS.REMINDER_SEND,
+    PERMISSIONS.REMINDER_CONFIGURE,
+    PERMISSIONS.RECURRING_VIEW,
+    PERMISSIONS.RECURRING_CREATE,
+    PERMISSIONS.RECURRING_MANAGE,
+    PERMISSIONS.PAYMENT_LINK_VIEW,
+    PERMISSIONS.PAYMENT_LINK_CREATE,
+    PERMISSIONS.PAYMENT_LINK_MANAGE,
+    PERMISSIONS.REPORT_VIEW,
+    PERMISSIONS.REPORT_EXPORT,
+    PERMISSIONS.SETTINGS_FINANCE,
+    PERMISSIONS.SETTINGS_TAX,
+    PERMISSIONS.SETTINGS_INVOICE_NUMBER,
+    PERMISSIONS.SETTINGS_MANAGE,
+    PERMISSIONS.AUDIT_VIEW
+  ],
+  [ROLES.PROJECT_MANAGER]: [
+    PERMISSIONS.DASHBOARD_VIEW,
+    PERMISSIONS.INVOICE_VIEW,
+    PERMISSIONS.INVOICE_REQUEST,
+    PERMISSIONS.QUOTATION_VIEW,
+    PERMISSIONS.QUOTATION_CREATE,
+    PERMISSIONS.CLIENT_VIEW,
+    PERMISSIONS.PAYMENT_VIEW
+  ],
+  [ROLES.CLIENT]: [
+    PERMISSIONS.INVOICE_VIEW,
+    PERMISSIONS.INVOICE_DOWNLOAD,
+    PERMISSIONS.RECEIPT_VIEW,
+    PERMISSIONS.RECEIPT_DOWNLOAD,
+    PERMISSIONS.CREDIT_NOTE_VIEW
+  ]
+};
+
+export const INVOICE_STATUSES = {
+  DRAFT: 'Draft',
+  PENDING_APPROVAL: 'Pending Approval',
+  SENT: 'Sent',
+  VIEWED: 'Viewed',
+  PAYMENT_PENDING: 'Payment Pending',
+  PARTIALLY_PAID: 'Partially Paid',
+  PAID: 'Paid',
+  OVERDUE: 'Overdue',
+  CANCELLED: 'Cancelled',
+  PAYMENT_FAILED: 'Payment Failed',
+  REFUNDED: 'Refunded'
+};
+
+export const PAYMENT_VERIFICATION_STATUSES = {
+  RECEIVED: 'Received',
+  UNVERIFIED: 'Unverified',
+  VERIFIED: 'Verified',
+  RECONCILED: 'Reconciled'
+};

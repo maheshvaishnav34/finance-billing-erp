@@ -1,0 +1,30 @@
+{
+  "name": "redes-finance-billing-erp",
+  "version": "1.0.0",
+  "description": "Redes Creation ERP - Finance, Billing & Payment Collection Module",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "dev": "node ./node_modules/concurrently/dist/bin/concurrently.js \"npm run dev:server\" \"npm run dev:client\"",
+    "start": "npm --prefix server run start",
+    "build": "npm --prefix client run build"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.24.4",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
