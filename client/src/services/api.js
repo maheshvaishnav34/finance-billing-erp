@@ -6,6 +6,12 @@ async function safeJson(res) {
     if (!text || !text.trim()) {
       return { success: false, message: `Server returned empty response (${res.status})` };
     }
+    if (text.trim().startsWith('<')) {
+      return {
+        success: false,
+        message: `Server returned HTML response (${res.status}). Server might be warming up or restarting, please retry.`
+      };
+    }
     return JSON.parse(text);
   } catch (err) {
     return { success: false, message: `Failed to parse response: ${err.message}` };

@@ -33,18 +33,14 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
-// Configure CORS
+// Configure CORS - allow all origins (reflecting request origin), localhost, vercel.app
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl) or matching frontend URL
-    if (!origin || origin === FRONTEND_URL || origin.startsWith('http://localhost:')) {
-      callback(null, true);
-    } else {
-      callback(new Error('Blocked by CORS policy'));
-    }
-  },
-  credentials: true
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
+app.options('*', cors());
 
 app.use(express.json());
 
@@ -74,6 +70,22 @@ app.get('/api/health', async (req, res) => {
     success: true,
     server: 'ok',
     database: isDbConnected ? 'connected' : 'disconnected'
+  });
+// 404 Handler for undefined /api routes
+app.use('/api/*', (req, res) => {
+  return res.status(404).json({
+    success: false,
+    message: `API endpoint ${req.method} ${req.originalUrl || req.url} not found`
+  });
+});
+
+// Global JSON Error Handler (prevents default HTML error pages)
+app.use((err, req, res, next) => {
+  console.error('Unhandled Server Error:', err);
+  const status = err.status || err.statusCode || 500;
+  return res.status(status).json({
+    success: false,
+    message: err.message || 'Internal Server Error'
   });
 });
 
